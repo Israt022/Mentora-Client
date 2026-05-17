@@ -2,10 +2,16 @@ import { getCourseById } from '@/lib/courses/data';
 import { Chip } from '@heroui/react';
 import Image from 'next/image';
 import { BookOpen, Clock, BarChart, Users } from 'lucide-react';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const CourseDetailsPage = async({params}) => {
     const {id} = await params;
-    const course = await getCourseById(id);
+    const {token} =  await auth.api.getToken({
+        headers: await headers() // headers containing the user's session token
+    });
+    console.log(token);
+    const course = await getCourseById(id,token);
     const {_id,title,description,thumbnail,category,price,duration,instructor,level,totalLessons,enrollmentCount} = course;
     const featuredItems = [
         { icon: Clock, label: duration || '12h 30m' },

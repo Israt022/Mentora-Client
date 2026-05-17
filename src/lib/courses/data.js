@@ -14,9 +14,13 @@ export const getCourses = async()=>{
 }
 
 // get course data by id
-export const getCourseById = async(id)=>{
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${id}`)
+export const getCourseById = async(id,token)=>{
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${id}`,{
+        headers: {
+            authorization : `Bearer ${token}` || ""
+        }
+    })
     const data = await res.json();
 
-    return data;
+    return data || "";
 }
